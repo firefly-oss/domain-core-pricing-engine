@@ -103,7 +103,7 @@ spring:
     version: 1.0.0
     description: Core Pricing Engine - Domain Layer
     team:
-      name: Firefly Software Solutions Inc
+      name: Firefly Software Foundation
       email: dev@getfirefly.io
   threads:
     virtual:
