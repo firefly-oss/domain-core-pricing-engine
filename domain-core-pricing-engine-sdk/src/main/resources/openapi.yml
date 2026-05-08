@@ -1,0 +1,235 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:18080
+  description: Generated server url
+tags:
+- name: Pricing Engine - Products
+  description: Read endpoints exposing pricing definitions sourced from core-common-product-mgmt
+- name: Pricing Engine - Simulation
+  description: "Pricing-engine simulation calculations (monthly payment, TIN, TAE,\
+    \ fees)"
+paths:
+  /api/v1/pricing-engine/simulations/calculate:
+    post:
+      tags:
+      - Pricing Engine - Simulation
+      summary: Calculate a pricing simulation
+      description: "Computes the monthly payment, TIN, TAE, opening fee and total\
+        \ amount for the requested simulation parameters."
+      operationId: calculateSimulation
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CalculateSimulationCommand"
+        required: true
+      responses:
+        "200":
+          description: Simulation calculated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimulationCalculationResultDTO"
+        "400":
+          description: Invalid simulation parameters
+        "404":
+          description: No matching product or bracket found
+  /api/v1/pricing-engine/products/{productId}/pricing:
+    get:
+      tags:
+      - Pricing Engine - Products
+      summary: Get product pricing
+      description: Retrieves the pricing definition for a single product.
+      operationId: getEngineProductPricing
+      parameters:
+      - name: productId
+        in: path
+        description: Unique identifier of the product
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Pricing retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductPricingDTO"
+        "400":
+          description: Invalid product identifier
+        "404":
+          description: Product not found
+  /api/v1/pricing-engine/products:
+    get:
+      tags:
+      - Pricing Engine - Products
+      summary: List products with pricing
+      description: "Lists products with pricing, optionally filtered by productType."
+      operationId: listEngineProductsWithPricing
+      parameters:
+      - name: productType
+        in: query
+        description: "Optional product-type filter (e.g. PERSONAL_LOAN, LEASING)"
+        required: false
+        schema:
+          type: string
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Products listed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductPricingDTO"
+        "400":
+          description: Invalid filter
+        "404":
+          description: No products available
+components:
+  schemas:
+    CalculateSimulationCommand:
+      required:
+      - productType
+      - requestedAmount
+      - term
+      type: object
+      properties:
+        productId:
+          type: string
+          format: uuid
+        productType:
+          pattern: ^(PERSONAL_LOAN|LEASING)$
+          type: string
+        requestedAmount:
+          type: number
+        term:
+          minimum: 1
+          type: integer
+          format: int32
+        purpose:
+          type: string
+        sector:
+          type: string
+        assetType:
+          type: string
+        currency:
+          type: string
+    SimulationCalculationResultDTO:
+      type: object
+      properties:
+        productId:
+          type: string
+          description: Identifier of the product the simulation was computed against.
+          format: uuid
+        productType:
+          type: string
+          description: "Product type (PERSONAL_LOAN, LEASING, ...)."
+        currency:
+          type: string
+          description: ISO-4217 currency code (e.g. EUR).
+        requestedAmount:
+          type: number
+          description: Requested principal amount.
+        term:
+          type: integer
+          description: Loan term in months.
+          format: int32
+        monthlyPayment:
+          type: number
+          description: "Periodic (monthly) payment, rounded to 2 decimals (HALF_EVEN)."
+        tin:
+          type: number
+          description: "Nominal interest rate of the matched bracket (TIN, in percent)."
+        tae:
+          type: number
+          description: "Annual percentage rate (TAE, in percent), accounts for fees."
+        totalAmount:
+          type: number
+          description: Total amount paid over the life of the loan (monthlyPayment
+            * term).
+        openingFee:
+          type: number
+          description: Computed opening fee amount.
+        bracketMinAmount:
+          type: number
+          description: Lower bound of the matched interest-rate bracket.
+        bracketMaxAmount:
+          type: number
+          description: Upper bound of the matched interest-rate bracket.
+        bracketTin:
+          type: number
+          description: TIN of the matched interest-rate bracket (in percent).
+      description: Result of a pricing-engine simulation calculation.
+    FeeDefinitionDTO:
+      type: object
+      properties:
+        type:
+          type: string
+        percentage:
+          type: number
+        fixed:
+          type: number
+    InterestRateBracketDTO:
+      type: object
+      properties:
+        minAmount:
+          type: number
+        maxAmount:
+          type: number
+        tin:
+          type: number
+    ProductPricingDTO:
+      type: object
+      properties:
+        productId:
+          type: string
+          format: uuid
+        productCode:
+          type: string
+        productType:
+          type: string
+        currency:
+          type: string
+        minAmount:
+          type: number
+        maxAmount:
+          type: number
+        minTerm:
+          type: integer
+          format: int32
+        maxTerm:
+          type: integer
+          format: int32
+        interestRates:
+          type: array
+          items:
+            $ref: "#/components/schemas/InterestRateBracketDTO"
+        fees:
+          type: array
+          items:
+            $ref: "#/components/schemas/FeeDefinitionDTO"
