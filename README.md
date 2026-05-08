@@ -256,3 +256,38 @@ OpenAPI documentation is available at:
 ## Repository
 
 [https://github.com/firefly-oss/domain-core-pricing-engine](https://github.com/firefly-oss/domain-core-pricing-engine)
+
+## Current implementation status
+
+### Step 3.1 (this commit) -- scaffold complete
+
+- Multi-module Maven structure (`-interfaces`, `-infra`, `-core`, `-web`, `-sdk`).
+- Spring Boot bootstrap: production entry point `PricingEngineApplication` and the
+  build-time `OpenApiGenApplication` (under `src/test/java`) used by the parent
+  POM's `openapi-start` / `openapi-stop` flow.
+- `ClientFactory` and `ProductMgmtProperties` wiring for the downstream
+  `core-common-product-mgmt` service.
+- Stub `openapi.yml` so `openapi-generator-maven-plugin` can run before any
+  controllers exist; the spec is regenerated from the live web app on each build.
+- `domain-core-pricing-engine-sdk` registered in `firefly-bom`.
+
+### Architectural deviation from the original README
+
+The introduction above and the `Setup` section refer to `core-common-pricing-mgmt`
+as the downstream pricing data store. That service has been deprecated; pricing
+data now lives in `core-common-product-mgmt` (extended in Phase 1). The
+`ClientFactory` in this scaffold therefore consumes
+`com.firefly.core-common-product-mgmt-sdk` and the configuration prefix is
+`api-configuration.common-platform.product-mgmt`.
+
+### Deferred to Step 4.1 (next phase)
+
+- `PricingEngineService`, `CalculateSimulationCommand`, `GetProductPricingQuery`.
+- REST controllers under `com.firefly.domain.core.pricing.engine.web.controllers`.
+- Business logic for price calculation and simulation.
+- Full unit and integration test suite.
+
+### Deferred to a future phase (per the README's full vision above)
+
+- `RegisterPricingSaga`, `UpdatePricingSaga`, `RegisterFeeSchemaSaga`, `UpdateFeeRuleSaga`.
+- Fee, commission and eligibility orchestration with `@StepEvent` domain events.
