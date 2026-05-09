@@ -41,7 +41,7 @@ server:
 api-configuration:
   common-platform:
     product-mgmt:
-      base-path: ${PRODUCT_MGMT_URL:http://localhost:8085}
+      base-path: ${ENDPOINT_CORE_COMMON_PRODUCT_MGMT:http://localhost:8085}
       timeout: 5s
 
 springdoc:
