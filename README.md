@@ -214,9 +214,9 @@ The `domain-core-pricing-engine-sdk` module auto-generates a reactive Java clien
 
 | Package | Description |
 |---------|-------------|
-| `com.firefly.domain.core.pricing.engine.sdk.api` | API client classes for each controller tag |
-| `com.firefly.domain.core.pricing.engine.sdk.model` | Request/response model DTOs |
-| `com.firefly.domain.core.pricing.engine.sdk.invoker` | `ApiClient` configuration and HTTP transport |
+| `io.fireflysoftware.domain.core.pricing.engine.sdk.api` | API client classes for each controller tag |
+| `io.fireflysoftware.domain.core.pricing.engine.sdk.model` | Request/response model DTOs |
+| `io.fireflysoftware.domain.core.pricing.engine.sdk.invoker` | `ApiClient` configuration and HTTP transport |
 
 **Usage:**
 
@@ -224,7 +224,7 @@ Add the SDK dependency to your consuming service:
 
 ```xml
 <dependency>
-    <groupId>com.firefly</groupId>
+    <groupId>io.fireflysoftware</groupId>
     <artifactId>domain-core-pricing-engine-sdk</artifactId>
     <version>${domain-core-pricing-engine.version}</version>
 </dependency>
@@ -290,13 +290,13 @@ The introduction above and the `Setup` section refer to `core-common-pricing-mgm
 as the downstream pricing data store. That service has been deprecated; pricing
 data now lives in `core-common-product-mgmt` (extended in Phase 1). The
 `ClientFactory` in this scaffold therefore consumes
-`com.firefly.core-common-product-mgmt-sdk` and the configuration prefix is
+`io.fireflysoftware.core-common-product-mgmt-sdk` and the configuration prefix is
 `api-configuration.common-platform.product-mgmt`.
 
 ### Deferred to Step 4.1 (next phase)
 
 - `PricingEngineService`, `CalculateSimulationCommand`, `GetProductPricingQuery`.
-- REST controllers under `com.firefly.domain.core.pricing.engine.web.controllers`.
+- REST controllers under `io.fireflysoftware.domain.core.pricing.engine.web.controllers`.
 - Business logic for price calculation and simulation.
 - Full unit and integration test suite.
 
