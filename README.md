@@ -1,4 +1,17 @@
-# domain-core-pricing-engine
+<a href="https://fireflysoftware.io/openplatform/">
+<picture>
+  <source media="(max-width: 640px) and (prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/firefly-oss/.github/main/profile/assets/banner-narrow-dark.svg">
+  <source media="(max-width: 640px)" srcset="https://raw.githubusercontent.com/firefly-oss/.github/main/profile/assets/banner-narrow-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/firefly-oss/.github/main/profile/assets/banner-dark.svg">
+  <img src="https://raw.githubusercontent.com/firefly-oss/.github/main/profile/assets/banner-light.svg" alt="Firefly OpenPlatform - Domain Core - Pricing Engine" width="100%">
+</picture>
+</a>
+
+# Firefly OpenPlatform - Domain Core - Pricing Engine
+
+Developed by the Firefly Software Foundation. [dev@fireflysoftware.io](mailto:dev@fireflysoftware.io)
+
+[Website](https://fireflysoftware.io/) · [OpenPlatform](https://fireflysoftware.io/openplatform/) · [Module catalogue](https://fireflysoftware.io/openplatform/modules/)
 
 Core domain microservice for calculating prices, fees, and commissions using product configurations and a rule engine. This service acts as the centralized pricing orchestration layer within the Firefly platform, coordinating pricing computations, fee schedule management, and commission calculations through saga-based distributed transactions against the `core-common-pricing-mgmt` management service.
 
