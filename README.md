@@ -104,7 +104,7 @@ spring:
     description: Core Pricing Engine - Domain Layer
     team:
       name: Firefly Software Foundation
-      email: dev@getfirefly.io
+      email: dev@fireflysoftware.io
   threads:
     virtual:
       enabled: true

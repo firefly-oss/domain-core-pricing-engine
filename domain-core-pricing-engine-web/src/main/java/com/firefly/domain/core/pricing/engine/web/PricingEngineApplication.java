@@ -52,7 +52,7 @@ import org.springframework.web.reactive.config.EnableWebFlux;
         ),
         servers = {
                 @Server(
-                        url = "http://core.getfirefly.io/domain-core-pricing-engine",
+                        url = "https://openplatform.fireflysoftware.io/domain-core-pricing-engine",
                         description = "Development Environment"
                 ),
                 @Server(
