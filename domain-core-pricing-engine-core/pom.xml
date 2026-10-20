@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>domain-core-pricing-engine-core</artifactId>
+    <name>domain-core-pricing-engine-core</name>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>

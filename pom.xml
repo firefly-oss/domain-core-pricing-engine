@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>domain-core-pricing-engine</artifactId>
+    <name>domain-core-pricing-engine</name>
     <version>26.10.3</version>
     <packaging>pom</packaging>
     <modules>
